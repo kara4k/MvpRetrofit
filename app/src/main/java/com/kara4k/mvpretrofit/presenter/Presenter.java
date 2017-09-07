@@ -13,8 +13,9 @@ import java.util.List;
 
 public class Presenter implements PresenterIF, DataProviderIF.DataReceiver {
 
-    private final DataProviderIF mDataProviderIF;
-    private final ViewIF mViewIF;
+    public DataProviderIF mDataProviderIF;
+
+    private ViewIF mViewIF;
 
     public Presenter(DataProviderIF dataProviderIF, ViewIF viewIF) {
         mDataProviderIF = dataProviderIF;

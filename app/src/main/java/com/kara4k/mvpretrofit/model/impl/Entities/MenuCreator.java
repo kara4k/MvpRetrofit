@@ -6,7 +6,7 @@ import com.kara4k.mvpretrofit.model.Type;
 
 import java.util.ArrayList;
 
-public class MenuHolder {
+public class MenuCreator {
 
     public static ArrayList<? extends Item> createCategories(int id) {
         ArrayList<MenuItem> categories = new ArrayList<>();

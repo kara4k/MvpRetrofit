@@ -18,10 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.kara4k.mvpretrofit.DaggerAppComponent;
 import com.kara4k.mvpretrofit.R;
 import com.kara4k.mvpretrofit.model.Item;
-import com.kara4k.mvpretrofit.model.impl.DataProvider;
-import com.kara4k.mvpretrofit.presenter.Presenter;
+import com.kara4k.mvpretrofit.modules.PresenterModule;
 import com.kara4k.mvpretrofit.presenter.PresenterIF;
 import com.kara4k.mvpretrofit.view.Holder;
 import com.kara4k.mvpretrofit.view.HolderFactory.HoldersFactory;
@@ -30,21 +30,25 @@ import com.kara4k.mvpretrofit.view.ViewIF;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class DataListFragment extends Fragment implements ViewIF, DialogInterface.OnClickListener {
 
-    private PresenterIF mPresenterIF;
+    @Inject
+    public PresenterIF mPresenterIF;
+
     private ProgressDialog mProgressDialog;
     private Adapter mAdapter;
 
-    public static DataListFragment newInstance() {
-        return new DataListFragment();
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mPresenterIF = new Presenter(new DataProvider(), this);
+        DaggerAppComponent.builder()
+                .presenterModule(new PresenterModule(this))
+                .build()
+                .injectDataFragment(this);
     }
 
     @Nullable
@@ -121,6 +125,10 @@ public class DataListFragment extends Fragment implements ViewIF, DialogInterfac
     @Override
     public void onClick(DialogInterface dialog, int which) {
         hideProgressDialog();
+    }
+
+    public static DataListFragment newInstance() {
+        return new DataListFragment();
     }
 
     class Adapter extends RecyclerView.Adapter<Holder> {
